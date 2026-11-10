@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JWT Decoder</title>
+  <meta name="description" content="Decode a JSON Web Token to read its header, payload and claims, and check its signature. Everything runs in your browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <h1>JWT Decoder</h1>
+      <p>Paste a JSON Web Token to read its header, payload and claims, and check its signature. Everything happens in your browser, so the token is never sent anywhere.</p>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite" data-state="empty">
+      <span class="pill">Ready</span><span class="msg">Paste a token on the left to begin.</span>
+    </div>
+    <ul id="warnings" class="warnings" hidden></ul>
+
+    <div class="layout">
+      <div class="col">
+        <section class="pane" aria-label="Encoded token">
+          <div class="pane-head">
+            <label class="title" for="token">Encoded token</label>
+            <div class="actions">
+              <button id="btnSample" type="button">Load sample</button>
+              <button id="btnClear" type="button">Clear</button>
+            </div>
+          </div>
+          <textarea id="token" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Paste a token here, for example eyJhbGciOi..."></textarea>
+          <p id="parts" class="parts" aria-label="Token parts" hidden></p>
+        </section>
+
+        <section class="pane" aria-label="Verify signature">
+          <div class="pane-head">
+            <span class="title">Verify signature</span>
+            <span id="verifyAlg" class="meta"></span>
+          </div>
+          <div class="verify">
+            <label id="keyLabel" class="lbl" for="key">Secret</label>
+            <textarea id="key" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Enter the secret or public key"></textarea>
+            <label id="b64row" class="check" for="b64" hidden><input type="checkbox" id="b64"> The secret is Base64URL encoded</label>
+            <p id="keyHint" class="hint"></p>
+            <p id="verifyResult" class="vresult" data-state="idle">Enter a key to check the signature.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="pane" aria-label="Header">
+          <div class="pane-head">
+            <span class="title hdr">Header</span>
+            <button id="copyHeader" class="small" type="button">Copy</button>
+          </div>
+          <pre id="headerOut" tabindex="0"><code></code></pre>
+        </section>
+
+        <section class="pane" aria-label="Payload">
+          <div class="pane-head">
+            <span class="title pay">Payload</span>
+            <button id="copyPayload" class="small" type="button">Copy</button>
+          </div>
+          <pre id="payloadOut" tabindex="0"><code></code></pre>
+        </section>
+
+        <section id="claimsPane" class="pane" aria-label="Claims" hidden>
+          <div class="pane-head"><span class="title">Standard claims</span></div>
+          <dl id="claims" class="claims"></dl>
+        </section>
+
+        <section class="pane" aria-label="Signature">
+          <div class="pane-head">
+            <span class="title sig">Signature</span>
+            <span id="sigMeta" class="meta"></span>
+          </div>
+          <pre id="sigOut" class="sig-out" tabindex="0"><code></code></pre>
+        </section>
+      </div>
+    </div>
+
+    <footer class="foot">
+      Decoding only reads the token. It does not prove the token is genuine. Only a successful signature check does.
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
